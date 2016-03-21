@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>DbConnection.Serilog</id>
+        <version>1.0.0.0-Beta</version>
+        <title>DbConnection.Serilog</title>
+        <authors>Joel Weiss</authors>
+        <licenseUrl>https://github.com/joelweiss/DbConnection.Serilog/blob/master/Licence.txt</licenseUrl>
+        <projectUrl>https://github.com/joelweiss/DbConnection.Serilog</projectUrl>
+        <iconUrl>http://serilog.net/images/serilog-community-nuget.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Logs your DbConnection activity to Serilog.</description>
+        <summary>Logs your DbConnection activity to Serilog.</summary>
+        <tags>serilog logging DbConnection DbCommand</tags>
+        <dependencies>
+            <dependency id="Serilog" version="1.5.11" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Source\DbConnection.Serilog\bin\Release\DbConnection.Serilog.dll" target="lib\net46\DbConnection.Serilog.dll" />
+    </files>
+</package>
