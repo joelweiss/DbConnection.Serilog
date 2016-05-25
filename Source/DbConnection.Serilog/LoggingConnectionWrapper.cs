@@ -12,76 +12,43 @@ namespace DbConnection.Serilog
 {
     public class LoggingConnectionWrapper : System.Data.Common.DbConnection, IDisposable
     {
-        private readonly System.Data.Common.DbConnection _WrappedDbConnection;
         private readonly ILogger _Logger;
+        private System.Data.Common.DbConnection WrappedDbConnection { get; }
 
         public LoggingConnectionWrapper(System.Data.Common.DbConnection dbConnection, ILogger logger)
         {
             Contract.Requires(dbConnection != null, nameof(dbConnection) + " is null.");
             Contract.Requires(logger != null, nameof(logger) + " is null.");
-            _WrappedDbConnection = dbConnection;
+            WrappedDbConnection = dbConnection;
             _Logger = logger;
         }
 
         public override string ConnectionString
         {
-            get { return _WrappedDbConnection.ConnectionString; }
-            set { _WrappedDbConnection.ConnectionString = value; }
+            get { return WrappedDbConnection.ConnectionString; }
+            set { WrappedDbConnection.ConnectionString = value; }
         }
 
-        public override int ConnectionTimeout
-        {
-            get { return _WrappedDbConnection.ConnectionTimeout; }
-        }
+        public override int ConnectionTimeout => WrappedDbConnection.ConnectionTimeout;
 
-        public override string Database
-        {
-            get { return _WrappedDbConnection.Database; }
-        }
+        public override string Database => WrappedDbConnection.Database;
 
-        public override ConnectionState State
-        {
-            get { return _WrappedDbConnection.State; }
-        }
+        public override ConnectionState State => WrappedDbConnection.State;
 
-        public override string DataSource
-        {
-            get { return _WrappedDbConnection.DataSource; }
-        }
+        public override string DataSource => WrappedDbConnection.DataSource;
 
-        public override string ServerVersion
-        {
-            get { return _WrappedDbConnection.ServerVersion; }
-        }
+        public override string ServerVersion => WrappedDbConnection.ServerVersion;
 
-        protected override DbTransaction BeginDbTransaction(IsolationLevel il)
-        {
-            return _WrappedDbConnection.BeginTransaction(il);
-        }
+        protected override DbTransaction BeginDbTransaction(IsolationLevel il) => WrappedDbConnection.BeginTransaction(il);
 
-        public override void ChangeDatabase(string databaseName)
-        {
-            _WrappedDbConnection.ChangeDatabase(databaseName);
-        }
+        public override void ChangeDatabase(string databaseName) => WrappedDbConnection.ChangeDatabase(databaseName);        
 
-        public override void Close()
-        {
-            _WrappedDbConnection.Close();
-        }
+        public override void Close() => WrappedDbConnection.Close();
 
-        protected override DbCommand CreateDbCommand()
-        {
-            return new LoggingCommandWrapper(_WrappedDbConnection.CreateCommand(), _Logger.ForContext<LoggingCommandWrapper>());
-        }
+        protected override DbCommand CreateDbCommand() => new LoggingCommandWrapper(WrappedDbConnection.CreateCommand(), _Logger.ForContext<LoggingCommandWrapper>());
 
-        void IDisposable.Dispose()
-        {
-            _WrappedDbConnection.Dispose();
-        }
+        void IDisposable.Dispose() => WrappedDbConnection.Dispose();
 
-        public override void Open()
-        {
-            _WrappedDbConnection.Open();
-        }
+        public override void Open() => WrappedDbConnection.Open();
     }
 }
