@@ -13,7 +13,7 @@
         <summary>Logs your DbConnection activity to Serilog.</summary>
         <tags>serilog logging DbConnection DbCommand</tags>
         <dependencies>
-            <dependency id="Serilog" version="1.5.11" />
+            <dependency id="Serilog" version="2.0.0" />
         </dependencies>
     </metadata>
     <files>
