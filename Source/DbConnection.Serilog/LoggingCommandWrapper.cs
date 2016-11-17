@@ -122,7 +122,7 @@ namespace DbConnection.Serilog
             var command = GetCommandLog();
             using (var scope = new LoggingScope(_Logger, $"{nameof(ExecuteReader)} - {{Command}}", command))
             {
-                var result =  await _WrappedDbCommand.ExecuteReaderAsync(behavior, cancellationToken);
+                var result = await _WrappedDbCommand.ExecuteReaderAsync(behavior, cancellationToken);
                 scope.Complete();
                 return result;
             }
@@ -141,7 +141,16 @@ namespace DbConnection.Serilog
 
         public async override Task<object> ExecuteScalarAsync(CancellationToken cancellationToken)
         {
-            var command = GetCommandLog();
+            string command;
+            try
+            {
+                command = GetCommandLog();
+            }
+            catch (Exception ex)
+            {
+                _Logger.Error(ex, "Error getting command to log");
+                command = "Error Getting Command";
+            }
             using (var scope = new LoggingScope(_Logger, $"{nameof(ExecuteScalar)} - {{Command}}", command))
             {
                 var result = await _WrappedDbCommand.ExecuteScalarAsync(cancellationToken);
@@ -184,8 +193,16 @@ namespace DbConnection.Serilog
                 .Append(parameter.ParameterName)
                 .Append(": '")
                 .Append((parameter.Value == null || parameter.Value == DBNull.Value) ? "null" : parameter.Value)
-                .Append("' (Type = ")
-                .Append(parameter.DbType);
+                .Append("' (Type = ");
+
+            try
+            {
+                builder.Append(parameter.DbType);
+            }
+            catch (Exception ex)
+            {
+                builder.Append($"!Error getting DbType ({ex.Message})!");
+            }
 
             if (parameter.Direction != ParameterDirection.Input)
             {
