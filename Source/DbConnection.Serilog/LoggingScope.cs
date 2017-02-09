@@ -44,7 +44,7 @@ namespace DbConnection.Serilog
                         var values = _PropertyValues.ToList();
                         values.Add(_StopWatch.ElapsedMilliseconds);
 
-                        _Logger.Debug($"<< Finished: \"{_MessageTemplate}\" Successfully, ({{duration}}ms)", values);
+                        _Logger.Debug($"<< Finished: \"{_MessageTemplate}\" Successfully, ({{duration}}ms)", values.ToArray());
                     }
                     break;
             }
