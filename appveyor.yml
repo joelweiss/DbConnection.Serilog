@@ -1,18 +1,15 @@
-version: 1.0.0.{build}
+version: 1.1.{build}-Beta
 configuration: Release
-assembly_info:
+pull_requests:
+  do_not_increment_build_number: true
+dotnet_csproj:
   patch: true
-  file: AssemblyInfo.*
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
+  file: '**\DbConnection.Serilog.csproj'
+  version: '{version}'
+  package_version: '{version}'
 before_build:
-- ps: nuget restore Source\DbConnection.Serilog.sln
+- ps: dotnet restore Source\DbConnection.Serilog.sln
 build:
   project: Source\DbConnection.Serilog.sln
+  publish_nuget: true
   verbosity: minimal
-after_build:
-- ps: >-
-    nuget pack Nuget\DbConnection.Serilog.nuspec -Version $env:APPVEYOR_BUILD_VERSION-Beta
-
-    appveyor PushArtifact DbConnection.Serilog.$env:APPVEYOR_BUILD_VERSION-Beta.nupkg

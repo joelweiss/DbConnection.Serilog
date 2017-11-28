@@ -14,6 +14,7 @@ namespace DbConnection.Serilog
         private readonly Stopwatch _StopWatch;
         private LoggingScopeStatus _Status;
 
+#pragma warning disable Serilog004 // Constant MessageTemplate verifier
         internal LoggingScope(ILogger logger, string messageTemplate, params object[] propertyValues)
         {
             _Logger = logger;
@@ -49,6 +50,7 @@ namespace DbConnection.Serilog
                     break;
             }
         }
+#pragma warning restore Serilog004 // Constant MessageTemplate verifier
 
         internal void Complete()
         {
